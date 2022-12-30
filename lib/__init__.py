@@ -2,4 +2,5 @@ import pyglet
 
 from lib.grid   import Grid
 from lib.window import Window
-from lib.data   import Data
+import lib.data as Data
+from lib.camera import Camera
