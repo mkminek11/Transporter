@@ -7,7 +7,7 @@ class Tile:
     def __init__(self, num:int, x:int, y:int):
         self.num = num
         self.text = Data.TILE_NAMES[num]
-        self.sprite = pyglet.sprite.Sprite(Data.TILE_IMAGES[num])
+        self.sprite = pyglet.sprite.Sprite(Data.TILE_IMAGES[num], batch=Grid.batch)
         self.x = x
         self.y = y
         self.sprite.x = 64 * x
@@ -16,12 +16,12 @@ class Tile:
 
 class Grid:
     G:list[list[Tile]] = []
+    batch = pyglet.graphics.Batch()
     
     def __init__(self, width:int=0, height:int=0):
         self.height = Data.GRID_HEIGHT = height
         self.width  = Data.GRID_WIDTH  = width
         Grid.G = self.generate_randomly()
-        print(Grid.G)
 
     def generate_randomly(self):
         result:list[list[Tile]] = []

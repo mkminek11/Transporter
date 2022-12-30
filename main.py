@@ -1,12 +1,15 @@
 from lib import *
 
-g = Grid(10, 10)
-c = Camera()
+g = Grid(100, 100)
+cam = Camera()
 
 @Window.w.event
 def on_draw():
     Window.w.clear()
-    c.draw()
+    cam.draw()
 
+@Window.w.event
+def on_mouse_drag(x, y, dx, dy, button, modifiers):
+    cam.move(dx, dy)
 
 pyglet.app.run()
