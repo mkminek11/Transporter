@@ -1,4 +1,4 @@
-import pyglet
+import pyglet, pickle
 from random import choice
 import lib.data as Data
 
@@ -10,8 +10,8 @@ class Tile:
         self.sprite = pyglet.sprite.Sprite(Data.TILE_IMAGES[num], batch=Grid.batch)
         self.x = x
         self.y = y
-        self.sprite.x = 64 * x
-        self.sprite.y = 64 * y
+        self.sprite.x = Data.TILE_SIZE * x
+        self.sprite.y = Data.TILE_SIZE * y
 
 
 class Grid:
@@ -60,3 +60,15 @@ class Grid:
 
     def generate_from_file(self, path):     # may create not matching map from ´fake´ file
         pass
+
+    def export_data(self):
+        g = [[cell.num for cell in row] for row in Grid.G]
+        with open("save.dat", "wb") as fout:
+            pickle.dump(g, fout)
+        print("Export successful!")
+
+    def import_data(self):
+        with open("save.dat", "rb") as fin:
+            a = pickle.load(fin)
+            print("Import successful!")
+        Grid.G = [[Tile(cell, x, y) for x, cell in enumerate(row)] for y, row in enumerate(a)]

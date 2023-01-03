@@ -1,30 +1,35 @@
 from lib.grid import Grid, Tile
 from lib.window import Window
+import lib.data as Data
 
 class Camera:
     x_shift = 0
     y_shift = 0
     scale = 1
 
-    def __init__(self):
-        pass
-
-    def draw(self):
+    @classmethod
+    def draw(cls):
+        cls.resize()
         Grid.batch.draw()
-        for y, row in enumerate(Grid.G):
-            for x, cell in enumerate(row):
-                dx = x * 64 + Camera.x_shift
-                dy = y * 64 + Camera.y_shift
-                if dx < Window.w.width and dy < Window.w.height and dx > -64 and dy > -64:
-                    cell.sprite.visible = True
-                    self._update_position(cell)
-                else:
-                    cell.sprite.visible = False
 
-    def move(self, dx, dy):
+    @classmethod
+    def move(cls, dx, dy):
         Camera.x_shift += dx
         Camera.y_shift += dy
 
-    def _update_position(self, cell:Tile):
-        cell.sprite.x = 64 * cell.x + Camera.x_shift
-        cell.sprite.y = 64 * cell.y + Camera.y_shift
+    @classmethod
+    def resize(cls):
+        for y, row in enumerate(Grid.G):
+            for x, cell in enumerate(row):
+                dx = x * Data.TILE_SIZE + Camera.x_shift
+                dy = y * Data.TILE_SIZE + Camera.y_shift
+                if dx < Window.w.width and dy < Window.w.height and dx > -Data.TILE_SIZE and dy > -Data.TILE_SIZE:
+                    cell.sprite.visible = True
+                    cls._update_position(cell)
+                else:
+                    cell.sprite.visible = False
+
+    @classmethod
+    def _update_position(cls, cell:Tile):
+        cell.sprite.x = Data.TILE_SIZE * cell.x + Camera.x_shift
+        cell.sprite.y = Data.TILE_SIZE * cell.y + Camera.y_shift
